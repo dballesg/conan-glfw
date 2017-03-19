@@ -6,9 +6,9 @@ channel = os.getenv("CONAN_CHANNEL", "testing")
 username = os.getenv("CONAN_USERNAME", "dballesg")
 
 
-class GlfwTestConan(ConanFile):
+class GLFWTest(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
-    requires = "glew/2.0.0@coding3d/stable", "glfw/3.2.1@%s/%s" % (username, channel)
+    requires = "glfw/3.2.1@%s/%s" % (username, channel)
     generators = "cmake"
 
     def build(self):
@@ -22,4 +22,4 @@ class GlfwTestConan(ConanFile):
 
     def test(self):
         os.chdir("bin")
-        self.run(".%sexample" % os.sep)
+        self.run(".%sGLFWTest" % os.sep)
