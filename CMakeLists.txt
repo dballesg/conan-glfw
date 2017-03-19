@@ -1,9 +1,9 @@
 # =============================================================================
-# GLFW Test
+# GLFW
 # =============================================================================
 cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
 
-PROJECT(GLFW_Test)
+project(GLFW VERSION 3.2.1 LANGUAGES C)
 
 if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/conanbuildinfo.cmake) #Clion, with conanbuildinfo.cmake in build folder
     include(${CMAKE_CURRENT_SOURCE_DIR}/conanbuildinfo.cmake)
@@ -12,5 +12,5 @@ else()
 endif()
 conan_basic_setup()
 
-ADD_EXECUTABLE(example example.cpp)
-TARGET_LINK_LIBRARIES(example ${CONAN_LIBS})
+# Add the CMakeLists.txt from the glfw cloned repository
+add_subdirectory(glfw)
