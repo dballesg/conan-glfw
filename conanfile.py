@@ -28,10 +28,6 @@ class GlfwConan(ConanFile):
             self.run('sudo apt-get install libgl1-mesa-dev')
             self.run('sudo apt-get install libglew-dev')
 
-        elif self.settings.os == "Macos":
-            print("  Mac OS not implemented yet. Please help out! **** ")
-            sys.exit(1)
-
     def build(self):
         cmake = CMake(self.settings)
         shared = "-DBUILD_SHARED_LIBS=ON" if self.options.shared else ""
@@ -51,9 +47,9 @@ class GlfwConan(ConanFile):
 
     def package_info(self):
         if self.settings.os == "Windows":
-            self.cpp_info.libs.append("glfw3", "OpenGL32", "GLEW")
+            self.cpp_info.libs.append("glfw3")  # , "OpenGL32", "GLEW")
         elif self.settings.os == "Linux":
             self.cpp_info.libs = ["glfw3", "rt", "m", "dl", "Xrandr", "Xinerama", "Xxf86vm", "Xext", "Xcursor",
-                                  "Xrender", "Xfixes", "X11", "pthread", "xcb", "Xau", "Xdmcp", "GL", "GLEW"]
+                                  "Xrender", "Xfixes", "X11", "pthread", "xcb", "Xau", "Xdmcp"]  # , "GL", "GLEW"]
         elif self.settings.os == "Macos":
-            self.cpp_info.libs = ["glfw3", "GL", "GLEW"]
+            self.cpp_info.libs = ["glfw3"]  # , "GL", "GLEW"]
