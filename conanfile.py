@@ -30,9 +30,9 @@ class GlfwConan(ConanFile):
 
     def build(self):
         cmake = CMake(self.settings)
-        shared = "-DBUILD_SHARED_LIBS=ON" if self.options.shared else ""
+        shared = "-DBUILD_SHARED_LIBS=%s" % ("ON" if self.options.shared else "OFF")
         self.run("echo --------------------")
-        self.run("echo glfw-%s" % self.version)
+        self.run("echo GLFW %s" % self.version)
         self.run("echo --------------------")
         self.run("cd %s && mkdir build" % self.folder)
         self.run("cd %s/build && cmake .. %s %s" % (self.folder, cmake.command_line, shared))
@@ -40,14 +40,23 @@ class GlfwConan(ConanFile):
 
     def package(self):
         self.copy("*.h", dst="include", src="glfw/include")
+
         self.copy("*.lib", dst="lib", keep_path=False)
+
+        # Win
+        if self.options.shared:
+            self.copy("*dll.lib", dst="lib", keep_path=False)
+
         self.copy("*.dll", dst="bin", keep_path=False)
         self.copy("*.so", dst="lib", keep_path=False)
         self.copy("*.a", dst="lib", keep_path=False)
 
     def package_info(self):
         if self.settings.os == "Windows":
-            self.cpp_info.libs.append("glfw3")  # , "OpenGL32", "GLEW")
+            if self.options.shared:
+                self.cpp_info.libs.append("glfw3dll")  # , "OpenGL32", "GLEW")
+            else:
+                self.cpp_info.libs.append("glfw3")  # , "OpenGL32", "GLEW")
         elif self.settings.os == "Linux":
             self.cpp_info.libs = ["glfw3", "rt", "m", "dl", "Xrandr", "Xinerama", "Xxf86vm", "Xext", "Xcursor",
                                   "Xrender", "Xfixes", "X11", "pthread", "xcb", "Xau", "Xdmcp"]  # , "GL", "GLEW"]
